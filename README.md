@@ -22,19 +22,27 @@ For the Business management module, run [`supabase/business-management.sql`](./s
 
 The business AI analyst uses those same user-owned orders and expenses. Set `ANTHROPIC_API_KEY` in the API server's environment (for local development, add it to `.env`; for Render, add it in the service's environment settings). This is a server-only secret: do not prefix it with `VITE_` or add it to Vercel. `ANTHROPIC_MODEL` is optional; the server defaults to `claude-haiku-4-5-20251001`. No Anthropic key is included in this repository.
 
-Enable Email auth and Google in Supabase **Authentication → Providers**. In **Authentication → URL Configuration**, add the local frontend URL (`http://localhost:5173`) and your deployed Vercel URL to the allowed redirect URLs. The Google Cloud OAuth client must list `https://zcxoibarghyataxsrvlf.supabase.co/auth/v1/callback` as an authorized redirect URI. Add the Google client ID and secret to Supabase's Google provider settings; do not put those secrets in frontend environment variables.
+Enable Email auth and Google in Supabase **Authentication → Providers**. In **Authentication → URL Configuration**, add the local frontend URL (`http://localhost:5173`) and your deployed Render URL to the allowed redirect URLs. The Google Cloud OAuth client must list your Supabase project's `/auth/v1/callback` URL as an authorized redirect URI. Add the Google client ID and secret to Supabase's Google provider settings; do not put those secrets in frontend environment variables.
 
 The API reads/writes `public.dashboard_usage` and `public.sales_opportunities` for the authenticated Supabase user. Every analytics API request requires a valid Supabase access token; the API verifies it and passes the user token to PostgreSQL, where row-level security restricts records to `auth.uid()`. The service-role key is not used for dashboard or sales records. Contact submissions are stored in `public.contact_submissions` by the server API when its optional service-role key is configured.
 
 The sign-up form collects each user's name and email. Users can add sales records with their own record name, pipeline stage, revenue, profit, and loss; totals and team performance are calculated from those records. The app does not seed sample users, companies, sales, or revenue. Existing records from before per-user ownership was added remain unassigned and are not shown in user workspaces.
 
-## Deploy
+## Deploy on Render
 
-- **Hostinger Node.js hosting (full app):** Push this repository to GitHub and deploy it using a Hostinger plan that supports Node.js applications. Set the project root to the repository root, build command to `npm install && npm run build`, and start command to `npm start`. The Express server serves the Vite `dist` build and `/api` endpoints from the same origin. Add `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `VITE_SUPABASE_URL`, and `VITE_SUPABASE_ANON_KEY` as Hostinger environment variables; add `ANTHROPIC_API_KEY` if enabling the business AI analyst. Set `FRONTEND_URL` to the exact deployed site origin (include both `https://example.com` and `https://www.example.com` if both are used). Leave `VITE_API_BASE_URL` unset for same-origin API requests. Add the deployed site URL to Supabase Authentication's allowed redirect URLs. Keep service-role and AI keys server-only.
-- **Vercel frontend:** Import this repository, use the default Vite build command (`npm run build`) and output directory (`dist`). Set `VITE_API_BASE_URL`, `VITE_SUPABASE_URL`, and `VITE_SUPABASE_ANON_KEY`.
-- **Render API:** Create a Node web service from this repository with build command `npm install` and start command `npm start`. The included [`render.yaml`](./render.yaml) can also create the service. Set `FRONTEND_URL` to the Vercel origin, plus `SUPABASE_URL` and the public `SUPABASE_ANON_KEY`. Optionally set `SUPABASE_SERVICE_ROLE_KEY` to enable contact-form storage.
-- **Supabase:** Apply the SQL schema above, enable Email and Google auth providers, and configure OAuth redirect URLs. Keep any service-role key in Render's environment settings only.
-- **GitHub:** Push this project to a GitHub repository, then connect it to Vercel and Render for deployment.
+The included [`render.yaml`](./render.yaml) creates a single free Node.js web service that builds the Vite frontend and serves it, along with the `/api` endpoints, from the Express server.
+
+- Connect this GitHub repository to Render and create a Blueprint from `render.yaml`, or create a free **Web Service** manually.
+- Use build command `npm ci && npm run build` and start command `npm start`.
+- Set `FRONTEND_URL` to the service's exact public origin (for example, its `onrender.com` URL). `PORT` is assigned by Render.
+- Configure `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `VITE_SUPABASE_URL`, and `VITE_SUPABASE_ANON_KEY` using values from the same Supabase project. The Vite-prefixed variables are used at build time; the public anon key may be used in the browser.
+- Optionally set `SUPABASE_SERVICE_ROLE_KEY` to store contact submissions and `ANTHROPIC_API_KEY` to enable the business AI analyst. `ANTHROPIC_MODEL` is an optional model override. Keep these server-only secrets in Render's environment settings.
+- Leave `VITE_API_BASE_URL` unset because the frontend and API are served from the same origin.
+- Add the deployed Render URL to Supabase Authentication's allowed redirect URLs. Apply both SQL files from `supabase/` to the Supabase project.
+
+The free service may spin down after inactivity and take some time to respond on its next request.
+
+For a split deployment, the frontend can instead be hosted on Vercel with `VITE_API_BASE_URL` set to the Render API origin. Keep `FRONTEND_URL` on Render set to the frontend's exact public origin.
 
 ## API
 

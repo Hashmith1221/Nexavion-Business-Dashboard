@@ -11,12 +11,14 @@ import { loadOverviewData } from "./overviewData.js";
 const app = express();
 const port = Number(process.env.PORT) || 4000;
 const frontendDistPath = fileURLToPath(new URL("../dist", import.meta.url));
+const frontendUrl = process.env.FRONTEND_URL?.trim();
+if (!frontendUrl) throw new Error("FRONTEND_URL must be configured.");
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseAnonKey = process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY;
 const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const supabaseAuth = supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey) : null;
 const supabaseAdmin = supabaseUrl && supabaseServiceRoleKey ? createClient(supabaseUrl, supabaseServiceRoleKey) : null;
-const allowedOrigins = (process.env.FRONTEND_URL || "http://localhost:5173")
+const allowedOrigins = frontendUrl
   .split(",")
   .map((origin) => origin.trim());
 const contactRateLimits = new Map();
@@ -453,6 +455,6 @@ app.use((error, _request, response, _next) => {
   response.status(status).json({ error: status === 500 ? "An unexpected server error occurred." : "The request could not be processed." });
 });
 
-app.listen(port, () => {
+app.listen(port, "0.0.0.0", () => {
   console.log(`Nexavion API listening on port ${port} (${supabaseAuth ? "Supabase auth ready" : "authentication unavailable: missing Supabase configuration"})`);
 });
