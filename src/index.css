@@ -1,0 +1,276 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: "DM Sans", sans-serif;
+  color: #fff;
+  background: #070914;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 360px;
+  min-height: 100vh;
+  margin: 0;
+  background-color: #070914;
+  background-image:
+    linear-gradient(180deg, rgb(7 9 20 / 55%) 0%, rgb(7 9 20 / 85%) 60%, #070914 100%),
+    radial-gradient(ellipse 60% 50% at 85% 8%, rgb(124 58 237 / 30%), transparent 60%),
+    url("/assets/hero-bg-business.svg");
+  background-size: cover, cover, cover;
+  background-position: center top, center, center top;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #fff;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+::selection {
+  color: #fff;
+  background: #6558e8;
+}
+
+.scrollbar-hide {
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.recharts-cartesian-axis-tick-value {
+  fill: #828997;
+  font-size: 11px;
+}
+
+.recharts-tooltip-wrapper {
+  outline: none;
+}
+
+.auth-shell {
+  color: #e4e4e7;
+  background:
+    radial-gradient(ellipse at 74% 8%, rgb(91 33 182 / 24%), transparent 38%),
+    radial-gradient(ellipse at 5% 90%, rgb(8 145 178 / 13%), transparent 40%),
+    #090a0d;
+}
+
+.auth-visual {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  overflow: hidden;
+  opacity: 0.78;
+  pointer-events: none;
+  mask-image: linear-gradient(90deg, transparent 0%, #000 14%, #000 82%, transparent 100%);
+}
+
+.auth-visual::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgb(9 10 13 / 4%) 0%, rgb(9 10 13 / 22%) 48%, rgb(9 10 13 / 78%) 100%);
+  content: "";
+}
+
+.auth-visual-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.auth-input {
+  color: #e4e4e7;
+}
+
+.auth-input::placeholder {
+  color: #737b89;
+}
+
+.auth-input option {
+  color: #e4e4e7;
+  background: #111318;
+}
+
+.app-shell {
+  position: relative;
+  isolation: isolate;
+  color: #fff;
+  background: transparent;
+}
+
+.app-shell > main {
+  position: relative;
+  z-index: 1;
+}
+
+.app-shell .bg-white,
+.app-shell .bg-white\/90 {
+  background-color: #111318;
+}
+
+.app-shell header.bg-white\/90 {
+  background-color: rgb(7 9 20 / 82%);
+  backdrop-filter: blur(12px);
+}
+
+.app-shell article {
+  border: 1px solid rgb(255 255 255 / 8%);
+  border-radius: 20px;
+  background: rgb(10 12 28 / 72%);
+  backdrop-filter: blur(14px);
+}
+
+.app-shell .dashboard-hero {
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, rgb(10 12 40 / 35%), rgb(10 12 40 / 65%)),
+    url("/assets/hero-bg-business.svg") left center / cover no-repeat,
+    linear-gradient(135deg, #11142e, #090a16);
+}
+
+.app-shell .bg-\[\#f7f8fc\] {
+  background-color: #090a0d;
+}
+
+.app-shell .bg-slate-50,
+.app-shell .bg-slate-100 {
+  background-color: #191c23;
+}
+
+.app-shell .bg-violet-50 {
+  background-color: rgb(139 92 246 / 13%);
+}
+
+.app-shell .bg-blue-50 {
+  background-color: rgb(56 189 248 / 11%);
+}
+
+.app-shell .bg-emerald-50 {
+  background-color: rgb(52 211 153 / 11%);
+}
+
+.app-shell .bg-rose-50 {
+  background-color: rgb(251 113 133 / 11%);
+}
+
+.app-shell .bg-amber-50 {
+  background-color: rgb(251 191 36 / 11%);
+}
+
+.app-shell .border-slate-50,
+.app-shell .border-slate-100 {
+  border-color: rgb(255 255 255 / 8%);
+}
+
+.app-shell .border-slate-200 {
+  border-color: rgb(255 255 255 / 8%);
+}
+
+.app-shell .divide-slate-50 > :not([hidden]) ~ :not([hidden]),
+.app-shell .divide-slate-100 > :not([hidden]) ~ :not([hidden]) {
+  border-color: #252932;
+}
+
+.app-shell .text-slate-900,
+.app-shell .text-slate-800,
+.app-shell .text-slate-700 {
+  color: #e4e4e7;
+}
+
+.app-shell .text-slate-600 {
+  color: #c1c5ce;
+}
+
+.app-shell .text-slate-500,
+.app-shell .text-slate-400 {
+  color: #b8bcd9;
+}
+
+.app-shell .text-slate-300 {
+  color: #b8bcd9;
+}
+
+.app-shell [class~="bg-[#f7f5ff]"] {
+  background-color: #171522;
+}
+
+.app-shell .hover\:bg-slate-50:hover,
+.app-shell .hover\:bg-slate-50\/60:hover {
+  background-color: #191c23;
+}
+
+.app-shell .hover\:text-slate-800:hover {
+  color: #f4f4f5;
+}
+
+.app-shell input,
+.app-shell textarea,
+.app-shell select {
+  color: #e4e4e7;
+}
+
+.app-shell input::placeholder,
+.app-shell textarea::placeholder {
+  color: #737b89;
+}
+
+.app-shell .recharts-cartesian-grid line {
+  stroke: #252932;
+}
+
+.app-shell .bg-violet-600 {
+  background-color: #6d28f5;
+  border-radius: 14px;
+  box-shadow: 0 0 24px rgb(109 40 245 / 35%);
+}
+
+@media (max-width: 768px) {
+  body {
+    background-attachment: scroll;
+    background-position: 30% top, center, 30% top;
+  }
+}
+
+.form-enter {
+  animation: form-enter 240ms ease-out both;
+}
+
+@keyframes form-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+}
