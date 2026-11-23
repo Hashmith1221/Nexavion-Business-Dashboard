@@ -438,6 +438,10 @@ app.post("/api/contact", contactRateLimit, async (request, response, next) => {
   }
 });
 
+app.use("/api", (_request, response) => {
+  response.status(404).json({ error: "API endpoint not found." });
+});
+
 app.use(express.static(frontendDistPath));
 app.get("*", (request, response, next) => {
   if (request.path.startsWith("/api/")) return next();

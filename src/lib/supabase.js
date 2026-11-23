@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { parseJsonResponse } from "./response.js";
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
@@ -22,6 +23,6 @@ export async function getAuthSettings() {
   if (!response.ok) {
     throw new Error(`Could not check Supabase authentication settings (${response.status}).`);
   }
-  const settings = await response.json();
+  const settings = await parseJsonResponse(response, "Checking authentication settings");
   return { google: settings.external?.google === true };
 }

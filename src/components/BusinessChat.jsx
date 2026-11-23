@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowUp, Bot, Sparkles, X } from "lucide-react";
+import { parseJsonResponse } from "../lib/response.js";
 
 const suggestedQuestions = [
   "Why did profit drop last month?",
@@ -92,7 +93,7 @@ export default function BusinessChat({ accessToken, previewOnly = false }) {
         },
         body: JSON.stringify({ message, history }),
       });
-      const result = await response.json();
+      const result = await parseJsonResponse(response, "The assistant request");
       if (!response.ok) throw new Error(result.error || "The assistant could not answer right now.");
       if (typeof result.reply !== "string" || !result.reply.trim()) throw new Error("The assistant returned an empty answer. Please try again.");
       setMessages((current) => [...current, { role: "assistant", content: result.reply }]);

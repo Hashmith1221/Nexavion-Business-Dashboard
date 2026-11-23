@@ -10,6 +10,7 @@ import {
   Send,
   Sparkles,
 } from "lucide-react";
+import { parseJsonResponse } from "../lib/response.js";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
 const initialValues = {
@@ -160,7 +161,7 @@ function ContactForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
       });
-      const result = await response.json();
+      const result = await parseJsonResponse(response, "Sending your message");
       if (!response.ok) {
         const submissionError = new Error(result.error || "We couldn't send your message. Please try again.");
         submissionError.fields = result.fields;

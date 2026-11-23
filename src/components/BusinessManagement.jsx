@@ -30,6 +30,7 @@ import {
   YAxis,
 } from "recharts";
 import { calculateDeliveredOrderTotals, calculateOrderFinancials } from "../lib/businessCalculations.js";
+import { parseJsonResponse } from "../lib/response.js";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
 const preferencesKey = "nexavion:preferences";
@@ -210,7 +211,7 @@ export default function BusinessManagement({ accessToken, previewOnly = false })
       },
     });
     if (response.status === 204) return null;
-    const result = await response.json().catch(() => ({}));
+    const result = await parseJsonResponse(response, "Business data request");
     if (!response.ok) throw new Error(result.error || `Request failed (${response.status}).`);
     return result;
   }, [accessToken]);

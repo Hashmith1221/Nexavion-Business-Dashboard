@@ -48,6 +48,7 @@ import BusinessManagement from "./components/BusinessManagement.jsx";
 import SettingsPage from "./components/SettingsPage.jsx";
 import BusinessChat from "./components/BusinessChat.jsx";
 import { supabaseClient, supabaseConfigured } from "./lib/supabase.js";
+import { parseJsonResponse } from "./lib/response.js";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
 const preferencesStorageKey = "nexavion:preferences";
@@ -251,7 +252,7 @@ function App() {
       const response = await fetch(`${API_BASE}/api/overview?range=${period}`, {
         headers: { Authorization: `Bearer ${session.access_token}` },
       });
-      const result = await response.json();
+      const result = await parseJsonResponse(response, "Loading analytics");
       if (!response.ok) {
         throw new Error(result.error || `Analytics request failed (${response.status}).`);
       }
@@ -312,7 +313,7 @@ function App() {
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
         body: JSON.stringify({ ...eventForm, durationSeconds: 0, device: "Web" }),
       });
-      const result = await response.json();
+      const result = await parseJsonResponse(response, "Recording activity");
       if (!response.ok) throw new Error(result.error || "Could not record this event.");
       setModalOpen(false);
       setEventForm({ dashboard: "", action: "Viewed dashboard" });
@@ -341,7 +342,7 @@ function App() {
           lossAmount: Number(salesForm.lossAmount || 0),
         }),
       });
-      const result = await response.json();
+      const result = await parseJsonResponse(response, "Saving the sales record");
       if (!response.ok) throw new Error(result.error || "Could not save this sales record.");
       setSalesModalOpen(false);
       setSalesForm({ companyName: "", stage: "", amount: "", profitAmount: "", lossAmount: "" });
